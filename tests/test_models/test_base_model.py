@@ -26,6 +26,21 @@ class TestBaseModel(unittest.TestCase):
         self.assertTrue(isinstance(bm.created_at, datetime))
         self.assertTrue(isinstance(bm.updated_at, datetime))
 
+    def test_init_method_with_dict_data(self):
+        """This tests the initialization, with a given dictionary
+        data, handled by **kwargs"""
+        bm = BaseModel()
+        bm.name = "ALX"
+        bm.hub = "Ralno Hub Ojota"
+        dict_bm = bm.to_dict()
+        new_bm = BaseModel(**dict_bm)
+        self.assertFalse(bm == new_bm)
+        self.assertEqual(bm.id, new_bm.id)
+        self.assertEqual(bm.created_at, new_bm.created_at)
+        self.assertEqual(bm.updated_at, new_bm.updated_at)
+        self.assertTrue(bm.name == new_bm.name)
+        self.assertTrue(bm.hub == new_bm.hub)
+
     def test_str_method(self):
         """This method test the str magic function"""
         bm = BaseModel()
