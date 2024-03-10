@@ -5,6 +5,7 @@ this is date and time module in python it helps us work with time.
 """
 from datetime import datetime
 from uuid import uuid4
+from models import storage
 # import models
 
 
@@ -28,6 +29,7 @@ class BaseModel():
             self.id = str(uuid4())
             self.created_at = datetime.now()
             self.updated_at = datetime.now()
+            storage.new(self)
         else:
             for k in kwargs.keys():
                 if (k != '__class__' and k != 'created_at' and
@@ -43,6 +45,8 @@ class BaseModel():
     def save(self):
         """helps save every created instance"""
         self.updated_at = datetime.now()
+        storage.new(self)
+        storage.save()
 
     def to_dict(self):
         """helps convert object to dictionary"""

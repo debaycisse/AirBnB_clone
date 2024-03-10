@@ -6,21 +6,14 @@ and deserializes JSON file to instances"""
 
 import json
 
-class FileStroage:
+class FileStorage:
     """This class is used to serializes instances to a JSON
     file and deserializes JSON file to instances"""
 
 
-    __file_path = ""
-    __objects = {'objects': []}
+    __file_path = "data.json"
+    __objects = {}
 
-    """
-Public instance methods:
-1. all(self): returns the dictionary __objects
-2. new(self, obj): sets in __objects the obj with key <obj class name>.id
-3. save(self): serializes __objects to the JSON file (path: __file_path)
-4. reload(self): deserializes the JSON file to __objects (only if the JSON file (__file_path) exists ; otherwise, do nothing. If the file doesn’t exist, no exception should be raised)
-    """
     def all(self):
         """This method returns all the dictionary data in __objects"""
         return FileStorage.__objects
@@ -34,12 +27,20 @@ Public instance methods:
             is to be stored in __objects
         """
         key = "{}.{}".format(obj.__class__.__name__, obj.id)
-        data = {key: obj}
-        FileStorage.__objects['objects'].append(data)
+        FileStorage.__objects[key] = obj.to_dict()
 
     def save(self):
         """This method serializes the objects in __objects to the JSON
         format and save them in the file, specified by __file_path"""
         with open(FileStorage.__file_path, 'w', encoding='utf8') as f:
-            for obj in FileStorage.__objects['objects']:
-                json.dump(obj, f, indent='')
+            json.dump(FileStorage.__objects, f)
+#print(FileStorage.__objects)
+
+    def reload(self):
+        """This method deserializes the JSON file content to __objects,
+        only if the JSON file exists"""
+        try:
+            with open(FileStorage.__file_path, 'r', encoding='utf8') as f:
+                FileStorage.__objects = json.load(f)
+        except Exception as e:
+            pass
