@@ -6,10 +6,10 @@ and deserializes JSON file to instances"""
 
 import json
 
+
 class FileStorage:
     """This class is used to serializes instances to a JSON
     file and deserializes JSON file to instances"""
-
 
     __file_path = "data.json"
     __objects = {}
@@ -34,7 +34,6 @@ class FileStorage:
         format and save them in the file, specified by __file_path"""
         with open(FileStorage.__file_path, 'w', encoding='utf8') as f:
             json.dump(FileStorage.__objects, f)
-#print(FileStorage.__objects)
 
     def reload(self):
         """This method deserializes the JSON file content to __objects,
@@ -44,3 +43,9 @@ class FileStorage:
                 FileStorage.__objects = json.load(f)
         except Exception as e:
             pass
+
+    @staticmethod
+    def reset_objects():
+        """This method resets the number of object to zero.
+        It is meant for only unittest usage"""
+        FileStorage.__objects = {}
