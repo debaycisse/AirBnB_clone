@@ -2,14 +2,10 @@ __pycache__/
 __pycache__/*
 models/__pycache__/
 models/__pycache__/*
+models/*Backtrace*
 tests/__pycache__/
 tests/__pycache__/*
-<<<<<<< HEAD
 tests/*Backtrace*
 tests/test_models/*Backtrace*
 *.py~
-=======
 *Backtrace*
-models/*Backtrace*
-tests/*Backtrace*
->>>>>>> 7ce91b363a7c0b71d34a4934761311426603046d
