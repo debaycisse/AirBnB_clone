@@ -4,11 +4,12 @@
 
 from base_model import BaseModel
 
+
 class City(BaseModel):
     """This is the class for City object"""
     state_id = ""
     name = ""
-    
+
     def __init__(self, *args, **kwargs):
         if len(kwargs) == 0:
             super().__init__()
