@@ -11,6 +11,11 @@ try:
     from models.base_model import BaseModel
     from models.user import User
     from models import storage
+    from models.amenity import Amenity
+    from models.city import City
+    from models.place import Place
+    from models.review import Review
+    from models.state import State
 except Exception as e:
     print(e)
 
@@ -37,7 +42,9 @@ class HBNBCommand(cmd.Cmd):
         """This method creates a new instance of BaseModel"""
         if not line:
             print("** class name missing **")
-        elif line != "BaseModel" and line != "User":
+        elif line != "BaseModel" and line != "User" and line != "Amenity" and
+             line != "City" and line != "Place" and line != "Review" and
+             line != "State":
             print("** class doesn't exist **")
         else:
             if line == "BaseModel":
@@ -53,6 +60,44 @@ class HBNBCommand(cmd.Cmd):
                 u.password = "root"
                 u.save()
                 print(u.id)
+            elif line == "Amenity":
+                am = Amenity()
+                am.name = "Rooftop"
+                am.save()
+                print(am.id)
+            elif line == "City":
+                c = City()
+                c.state_id = "State ID"
+                c.name = "Lagos"
+                c.save()
+                print(c.id)
+            elif line == "Place":
+                pl = Place()
+                pl.city_id = "City ID"
+                pl.user_id = "User ID"
+                pl.name = "Ikeja"
+                pl.description = "A Bugalow with a rooftop"
+                pl.number_rooms = 3
+                pl.number_bathrooms = 3
+                pl.max_guest = 9
+                pl.price_per_night = 150
+                pl.latitude = 07777.888
+                pl.longitude = 9222.134
+                pl.amenity_ids = [12333]
+                pl.save()
+                print(pl.id)
+            elif line == "Review":
+                r = Review()
+                r.place_id = "Place ID"
+                r.user_id = "User ID"
+                r.text = "A very nice place"
+                r.save()
+                print(r.id)
+            elif line == "State":
+                st = State()
+                st.name = "Lagos"
+                st.save()
+                print(st.id)
 
     def do_show(self, line):
         """This method shows the instance details
@@ -65,7 +110,10 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             data = line.split()
-            if data[0] != 'BaseModel' and data[0] != 'User':
+            if data[0] != 'BaseModel' and data[0] != 'User' and
+               data[0] != 'Amenity' and data[0] != 'City' and
+               data[0] != 'Place' and data[0] != 'Review' and
+               data[0] != 'State':
                 print("** class doesn't exist **")
             elif len(data) != 2:
                 print("** instance id missing **")
@@ -74,6 +122,7 @@ class HBNBCommand(cmd.Cmd):
                 all_objs = fs.all()
                 bk = f'BaseModel.{data[1]}' not in all_objs.keys()
                 uk = f'User.{data[1]}' not in all_objs.keys()
+                ak = f'Amenity.{data[1]}' not in all_objs.keys()
                 if bk and uk:
                     print("** no instance found **")
                 else:
