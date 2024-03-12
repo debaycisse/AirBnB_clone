@@ -9,6 +9,7 @@ import os
 sys.path.append(os.getcwd())
 try:
     from models.base_model import BaseModel
+    from models.user import User
     from models import storage
 except Exception as e:
     print(e)
@@ -36,13 +37,22 @@ class HBNBCommand(cmd.Cmd):
         """This method creates a new instance of BaseModel"""
         if not line:
             print("** class name missing **")
-        elif line != "BaseModel":
+        elif line != "BaseModel" and line != "User":
             print("** class doesn't exist **")
         else:
-            b = BaseModel()
-            b.name = "ALX"
-            b.save()
-            print(b.id)
+            if line == "BaseModel":
+                b = BaseModel()
+                b.name = "ALX"
+                b.save()
+                print(b.id)
+            elif line == "User":
+                u = User()
+                u.first_name = "ALX"
+                u.last_name = "Nigeria"
+                u.email = "info@alxswe.com"
+                u.password = "root"
+                u.save()
+                print(u.id)
 
     def do_show(self, line):
         """This method shows the instance details
@@ -55,20 +65,25 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             data = line.split()
-            if data[0] != 'BaseModel':
+            if data[0] != 'BaseModel' and data[0] != 'User':
                 print("** class doesn't exist **")
             elif len(data) != 2:
                 print("** instance id missing **")
             else:
                 fs = storage
                 all_objs = fs.all()
-                if f'BaseModel.{data[1]}' not in all_objs.keys():
+                bk = f'BaseModel.{data[1]}' not in all_objs.keys()
+                uk = f'User.{data[1]}' not in all_objs.keys()
+                if bk and uk:
                     print("** no instance found **")
                 else:
                     for key in all_objs.keys():
                         if f'BaseModel.{data[1]}' == key:
                             b = BaseModel(**all_objs[key])
                             print(b)
+                        elif f'User.{data[1]}' == key:
+                            u = User(**all_objs[key])
+                            print(u)
 
     def do_destroy(self, line):
         """This method deletes an instance based on
@@ -81,24 +96,33 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             data = line.split()
-            if data[0] != 'BaseModel':
+            if data[0] != 'BaseModel' and data[0] != 'User':
                 print("** class doesn't exist **")
             elif len(data) < 2:
                 print("** instance id missing **")
             else:
                 fs = storage
                 all_objs = fs.all()
-                key = f'BaseModel.{data[1]}'
-                if key not in all_objs.keys():
+                keys = [
+                        f'BaseModel.{data[1]}',
+                        f'User.{data[1]}'
+                       ]
+                no_k0 = keys[0] not in all_objs.keys()
+                no_k1 = keys[1] not in all_objs.keys()
+                if (no_k0 and no_k1):
                     print("** no instance found **")
                 else:
                     for k in all_objs.keys():
-                        if k == key:
+                        if (k == keys[0]) or (k == keys[1]):
                             all_objs.pop(k)
                             break
-                    for obj_dict in all_objs:
-                        c = BaseModel(**all_objs[obj_dict])
-                        fs.new(c)
+                    for obj_key in all_objs.keys():
+                        if 'BaseModel' in obj_key:
+                            c = BaseModel(**all_objs[obj_key])
+                            fs.new(c)
+                        elif 'User' in obj_key:
+                            u = User(**all_objs[obj_key])
+                            fs.new(u)
                     fs.save()
 
     def do_all(self, line):
@@ -108,15 +132,29 @@ class HBNBCommand(cmd.Cmd):
         Args:
            line - the command argument, passed.
         """
-        if line and line != 'BaseModel':
+        if line and line != 'BaseModel' and line != 'User':
             print("** class doesn't exist **")
         else:
             data = []
             fs = storage
             all_objs = fs.all()
-            for value in all_objs.values():
-                temp = BaseModel(**value)
-                data.append(str(temp))
+            if not line:
+                for key in all_objs.keys():
+                    if 'User' in key:
+                        temp = User(**all_objs[key])
+                    elif 'BaseModel' in key:
+                        temp = BaseModel(**all_objs[key])
+                    data.append(str(temp))
+            elif line == 'User':
+                for key in all_objs.keys():
+                    if 'User' in key:
+                        temp = User(**all_objs[key])
+                        data.append(str(temp))
+            elif line == 'BaseModel':
+                for key in all_objs.keys():
+                    if 'BaseModel' in key:
+                        temp = BaseModel(**all_objs[key])
+                        data.append(str(temp))
             print(data)
 
     def do_update(self, line):
@@ -131,15 +169,20 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             args = line.split()
-            if args[0] != 'BaseModel':
+            if args[0] != 'BaseModel' and args[0] != 'User':
                 print("** class doesn't exist **")
             elif not args[1]:
                 print("** instance id missing **")
             else:
                 fs = storage
                 all_objs = fs.all()
-                key = f'BaseModel.{args[1]}'
-                if key not in all_objs.keys():
+                keys = [
+                       f'BaseModel.{args[1]}',
+                       f'User.{args[1]}'
+                      ]
+                no_k0 = keys[0] not in all_objs.keys()
+                no_k1 = keys[1] not in all_objs.keys()
+                if (no_k0 and no_k1):
                     print("** no instance found **")
                 else:
                     if len(args) < 3:
@@ -162,8 +205,12 @@ class HBNBCommand(cmd.Cmd):
                         for item_dict in all_objs.values():
                             if args[1] == item_dict['id']:
                                 item_dict[args[2]] = args[3]
-                                d = BaseModel(**item_dict)
-                                fs.new(d)
+                                if args[0] == 'BaseModel':
+                                    b = BaseModel(**item_dict)
+                                    fs.new(b)
+                                elif args[0] == 'User':
+                                    u = User(**item_dict)
+                                    fs.new(u)
                                 fs.save()
                                 break
 
