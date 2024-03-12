@@ -49,7 +49,7 @@ class TestBaseModel(unittest.TestCase):
         my_user = User()
         user_str = str(my_user)
         user_exp_str = "[{}] ({}) {}".format(my_user.__class__.__name__,
-                                                my_user.id, my_user.__dict__)
+                                             my_user.id, my_user.__dict__)
         self.assertEqual(user_str, user_exp_str)
 
     def test_save_method(self):
