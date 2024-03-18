@@ -1,0 +1,32 @@
+.places > h1 {
+    font-size: 30px;
+    text-align: left;
+}
+.places article {
+    width: 390px;
+    padding: 20px;
+    margin: 20px;
+    border: solid 1px #FF5A5F;
+    border-radius: 4px;
+}
+.places article h2 {
+    font-size: 30px;
+    text-align: center;
+}
+.all_places {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+div.price_by_night {
+    color: #FF5A5F;
+    border: solid 4px #FF5A5F;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    font-size: 30px;
+    position: relative;
+    left: 300px;
+    top: 2px;
+}
