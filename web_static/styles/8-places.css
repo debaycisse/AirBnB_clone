@@ -11,7 +11,7 @@
 }
 .places article h2 {
     font-size: 30px;
-    text-align: center;
+    text-align: right;
     margin: 0px;
 }
 .all_places {
@@ -33,9 +33,41 @@ div.price_by_night {
     margin-left: 30px;
 }
 .all_places > article {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-end;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+.all_places > article h2 {
+    grid-column-start: 1;
+    grid-column-end: 3;
+    grid-row-start: 1;
+    grid-row-end: 1;
+}
+.all_places > article div.price_by_night {
+    grid-column-start: 3;
+    grid-column-end: 4;
+    grid-row-start: 1;
+    grid-row-end: 1;
+    margin-bottom: 20px;
+}
+.all_places > article div.information {
+    grid-row-start: 2;
+    grid-row-end: 2;
+    grid-column-start: 1;
+    grid-column-end: 4;
+}
+.all_places > article div.user {
+    grid-row-start: 3;
+    grid-row-end: 3;
+    grid-column-start: 1;
+    grid-column-end: 4;
+    height: 40px;
+    margin-top: 10px;
+}
+.all_places > article div.description {
+    grid-row-start: 4;
+    grid-row-end: 4;
+    grid-column-start: 1;
+    grid-column-end: 4;
 }
 .information {
     height: 80px;
@@ -43,9 +75,36 @@ div.price_by_night {
     border-bottom: solid 1px #DDDDDD;
     display: flex;
     flex-direction: row;
+    width: 100%;
 }
 .max_guest {
     width: 100px;
-    background: url("../images/icon-group.png") no-repeat;
+    background: url("../images/icon_group.png") no-repeat center top;
+    margin: auto;
+    text-align: center;
+}
+.max_guest > span {
+    margin-top: 50px;
+    display: inline-block;
+}
+.number_rooms {
+    width: 100px;
+    background: url("../images/icon_bed.png") no-repeat center top;
+    margin: auto;
+    text-align: center;
+}
+.number_rooms > span {
+    margin-top: 50px;
+    display: inline-block;
+}
+.number_bathrooms {
+    width: 100px;
+    background: url("../images/icon_bath.png") no-repeat center top;
+    margin: auto;
+    text-align: center;
+}
+.number_bathrooms > span {
+    margin-top: 50px;
+    display: inline-block;
 }
 
